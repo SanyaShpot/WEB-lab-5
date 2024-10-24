@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christmas Trees CRUD App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-3xl font-bold text-center mb-6">Christmas Trees List</h1>
+
+    <div class="flex justify-end mb-6">
+      <button id="create-tree-btn" class="bg-blue-500 text-white px-4 py-2 rounded">Create Tree</button>
+    </div>
+
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex space-x-2">
+        <input type="text" id="search-input" placeholder="Search by material..." class="border rounded p-2">
+        <button id="search-btn" class="bg-blue-500 text-white p-2 rounded">Search</button>
+      </div>
+
+      <div class="flex space-x-2">
+        <select id="sort-options" class="border rounded p-2">
+          <option value="price">Sort by Price</option>
+          <option value="height">Sort by Height</option>
+        </select>
+        <button id="sort-btn" class="bg-green-500 text-white p-2 rounded">Sort</button>
+      </div>
+    </div>
+
+    <ul id="trees-list" class="space-y-4"></ul>
+
+    <p class="mt-6 text-lg font-semibold">Total Price: $<span id="total-price">0</span></p>
+  </div>
+
+  <div id="form-modal" style="display: none;" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded shadow-lg max-w-md w-full">
+      <h1 id="form-title" class="text-3xl font-bold text-center mb-6">Create Tree</h1>
+
+      <form id="tree-form" class="space-y-4">
+        <div>
+          <label for="name" class="block text-lg font-semibold">Tree Name:</label>
+          <input type="text" id="name" required class="border rounded w-full p-2">
+        </div>
+
+        <div>
+          <label for="height" class="block text-lg font-semibold">Height (cm):</label>
+          <input type="number" id="height" required min="1" class="border rounded w-full p-2">
+        </div>
+
+        <div>
+          <label for="manufacturer" class="block text-lg font-semibold">Manufacturer:</label>
+          <input type="text" id="manufacturer" required class="border rounded w-full p-2">
+        </div>
+
+        <div>
+          <label for="price" class="block text-lg font-semibold">Price ($):</label>
+          <input type="number" id="price" required min="0" class="border rounded w-full p-2">
+        </div>
+
+        <div>
+          <label for="material" class="block text-lg font-semibold">Material:</label>
+          <input type="text" id="material" required class="border rounded w-full p-2">
+        </div>
+
+        <div>
+          <label for="image" class="block text-lg font-semibold">Image URL:</label>
+          <input type="url" id="image" required class="border rounded w-full p-2">
+        </div>
+
+        <div class="flex justify-end space-x-2">
+          <button id="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save Tree</button>
+          <button type="button" id="cancel-form-btn" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
