@@ -47,7 +47,13 @@ buttonSubmit.addEventListener("click", async (e) => {
             body: JSON.stringify(newTree)
         });
     } else {
-        trees[editingTree] = newTree;
+        await fetch(`http://localhost:5050/api/items/${editingTree}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newTree)
+        });
         editingTree = null;
     }
 
@@ -57,22 +63,24 @@ buttonSubmit.addEventListener("click", async (e) => {
 
 function renderItems() {
     treesList.innerHTML = '';
-    trees.forEach((tree, index) => {
+    trees.forEach((tree) => {
         const li = document.createElement('li');
-        li.classList.add('flex', 'items-center', 'space-x-4', 'bg-gray-200', 'p-4', 'rounded', 'shadow');
+        li.classList.add('bg-gray-200', 'p-4', 'rounded', 'shadow', 'flex', 'flex-col', 'items-center', 'space-y-4');
         li.innerHTML = `
-            <img src="${tree.image}" class="w-24 h-36 rounded object-cover">
-            <div>
+            <img src="${tree.image}" class="w-36 h-48 rounded object-cover mb-4">
+            <div class="text-center">
                 <h2 class="text-xl font-bold">${tree.name}</h2>
                 <p>Height: <span class="font-semibold">${tree.height}</span> cm</p>
                 <p>Manufacturer: <span class="font-semibold">${tree.manufacturer}</span></p>
                 <p>Price: $<span class="font-semibold">${tree.price}</span></p>
                 <p>Material: <span class="font-semibold">${tree.material}</span></p>
-                <button class="edit-button bg-yellow-500 text-white px-4 py-1 rounded mt-2" data-index="${index}">Edit</button>
+                <button class="edit-button bg-yellow-500 text-white px-4 py-1 rounded mt-2" data-id="${tree.id}">Edit</button>
+                <button class="delete-button bg-red-500 text-white px-4 py-1 rounded mt-2" data-id="${tree.id}">Delete</button>
             </div>
         `;
+
         li.querySelector('.edit-button').addEventListener('click', () => {
-            editingTree = index;
+            editingTree = tree.id;
             document.getElementById("name").value = tree.name;
             document.getElementById("height").value = tree.height;
             document.getElementById("manufacturer").value = tree.manufacturer;
@@ -81,6 +89,14 @@ function renderItems() {
             document.getElementById("image").value = tree.image;
             formModal.style.display = "flex";
         });
+
+        li.querySelector('.delete-button').addEventListener('click', async () => {
+            await fetch(`http://localhost:5050/api/items/${tree.id}`, {
+                method: 'DELETE'
+            });
+            fetchTrees();
+        });
+
         treesList.appendChild(li);
     });
 
@@ -101,22 +117,24 @@ searchBtn.addEventListener('click', () => {
 
 function renderFilteredItems(filteredTrees) {
     treesList.innerHTML = '';
-    filteredTrees.forEach((tree, index) => {
+    filteredTrees.forEach((tree) => {
         const li = document.createElement('li');
-        li.classList.add('flex', 'items-center', 'space-x-4', 'bg-gray-200', 'p-4', 'rounded', 'shadow');
+        li.classList.add('bg-gray-200', 'p-4', 'rounded', 'shadow', 'flex', 'flex-col', 'items-center', 'space-y-4');
         li.innerHTML = `
-            <img src="${tree.image}" class="w-24 h-36 rounded object-cover">
-            <div>
+            <img src="${tree.image}" class="w-36 h-48 rounded object-cover mb-4">
+            <div class="text-center">
                 <h2 class="text-xl font-bold">${tree.name}</h2>
                 <p>Height: <span class="font-semibold">${tree.height}</span> cm</p>
                 <p>Manufacturer: <span class="font-semibold">${tree.manufacturer}</span></p>
                 <p>Price: $<span class="font-semibold">${tree.price}</span></p>
                 <p>Material: <span class="font-semibold">${tree.material}</span></p>
-                <button class="edit-button bg-yellow-500 text-white px-4 py-1 rounded mt-2" data-index="${index}">Edit</button>
+                <button class="edit-button bg-yellow-500 text-white px-4 py-1 rounded mt-2" data-id="${tree.id}">Edit</button>
+                <button class="delete-button bg-red-500 text-white px-4 py-1 rounded mt-2" data-id="${tree.id}">Delete</button>
             </div>
         `;
+
         li.querySelector('.edit-button').addEventListener('click', () => {
-            editingTree = index;
+            editingTree = tree.id;
             document.getElementById("name").value = tree.name;
             document.getElementById("height").value = tree.height;
             document.getElementById("manufacturer").value = tree.manufacturer;
@@ -125,6 +143,14 @@ function renderFilteredItems(filteredTrees) {
             document.getElementById("image").value = tree.image;
             formModal.style.display = "flex";
         });
+
+        li.querySelector('.delete-button').addEventListener('click', async () => {
+            await fetch(`http://localhost:5050/api/items/${tree.id}`, {
+                method: 'DELETE'
+            });
+            fetchTrees();
+        });
+
         treesList.appendChild(li);
     });
 
